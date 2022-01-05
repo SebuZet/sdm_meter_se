@@ -7,8 +7,10 @@
 namespace esphome {
 namespace sdm_meter_se {
 
-class SDMMeter : public PollingComponent, public modbus::ModbusDevice {
+class SDMMeterSE : public PollingComponent, public modbus::ModbusDevice {
  public:
+  SDMMeterSE();
+
   void set_voltage_sensor(uint8_t phase, sensor::Sensor *voltage_sensor) {
     this->phases_[phase].setup = true;
     this->phases_[phase].voltage_sensor_ = voltage_sensor;
@@ -37,6 +39,42 @@ class SDMMeter : public PollingComponent, public modbus::ModbusDevice {
     this->phases_[phase].setup = true;
     this->phases_[phase].phase_angle_sensor_ = phase_angle_sensor;
   }
+
+
+  void set_voltage_next_phase_sensor(uint8_t phase, sensor::Sensor *voltage_next_phase_sensor) {
+    this->phases_[phase].setup = true;
+    this->phases_[phase].voltage_next_phase_sensor_ = voltage_next_phase_sensor;
+  }
+  void set_active_energy_sensor(uint8_t phase, sensor::Sensor *active_energy_sensor) {
+    this->phases_[phase].setup = true;
+    this->phases_[phase].active_energy_sensor_ = active_energy_sensor;
+  }
+  void set_import_active_energy_sensor(uint8_t phase, sensor::Sensor *import_active_energy_sensor) {
+    this->phases_[phase].setup = true;
+    this->phases_[phase].import_active_energy_sensor_ = import_active_energy_sensor;
+  }
+  void set_export_active_energy_sensor(uint8_t phase, sensor::Sensor *export_active_energy_sensor) {
+    this->phases_[phase].setup = true;
+    this->phases_[phase].export_active_energy_sensor_ = export_active_energy_sensor;
+  }
+  void set_reactive_energy_sensor(uint8_t phase, sensor::Sensor *reactive_energy_sensor) {
+    this->phases_[phase].setup = true;
+    this->phases_[phase].reactive_energy_sensor_ = reactive_energy_sensor;
+  }
+  void set_import_reactive_energy_sensor(uint8_t phase, sensor::Sensor *import_reactive_energy_sensor) {
+    this->phases_[phase].setup = true;
+    this->phases_[phase].import_reactive_energy_sensor_ = import_reactive_energy_sensor;
+  }
+  void set_export_reactive_energy_sensor(uint8_t phase, sensor::Sensor *export_reactive_energy_sensor) {
+    this->phases_[phase].setup = true;
+    this->phases_[phase].export_reactive_energy_sensor_ = export_reactive_energy_sensor;
+  }
+  void set_demand_active_power_sensor(uint8_t phase, sensor::Sensor *demand_active_power_sensor) {
+    this->phases_[phase].setup = true;
+    this->phases_[phase].demand_active_power_sensor_ = demand_active_power_sensor;
+  }
+
+
   void set_frequency_sensor(sensor::Sensor *frequency_sensor) { this->frequency_sensor_ = frequency_sensor; }
   void set_import_active_energy_sensor(sensor::Sensor *import_active_energy_sensor) {
     this->import_active_energy_sensor_ = import_active_energy_sensor;
@@ -67,12 +105,24 @@ class SDMMeter : public PollingComponent, public modbus::ModbusDevice {
     sensor::Sensor *reactive_power_sensor_{nullptr};
     sensor::Sensor *power_factor_sensor_{nullptr};
     sensor::Sensor *phase_angle_sensor_{nullptr};
+
+    sensor::Sensor *voltage_next_phase_sensor_{nullptr};
+    sensor::Sensor *active_energy_sensor_{nullptr};
+    sensor::Sensor *import_active_energy_sensor_{nullptr};
+    sensor::Sensor *export_active_energy_sensor_{nullptr};
+    sensor::Sensor *reactive_energy_sensor_{nullptr};
+    sensor::Sensor *import_reactive_energy_sensor_{nullptr};
+    sensor::Sensor *export_reactive_energy_sensor_{nullptr};
+    sensor::Sensor *demand_active_power_sensor_{nullptr};
   } phases_[3];
   sensor::Sensor *frequency_sensor_{nullptr};
   sensor::Sensor *import_active_energy_sensor_{nullptr};
   sensor::Sensor *export_active_energy_sensor_{nullptr};
   sensor::Sensor *import_reactive_energy_sensor_{nullptr};
   sensor::Sensor *export_reactive_energy_sensor_{nullptr};
+
+  std::vector<uint8_t> data;
+  uint8_t read_cycle {0};
 };
 
 }  // namespace sdm_meter_se

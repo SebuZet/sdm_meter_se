@@ -11,7 +11,9 @@ from esphome.const import (
     CONF_FREQUENCY,
     CONF_ID,
     CONF_IMPORT_ACTIVE_ENERGY,
+    CONF_EXPORT_ACTIVE_ENERGY,
     CONF_IMPORT_REACTIVE_ENERGY,
+    CONF_EXPORT_REACTIVE_ENERGY,
     CONF_PHASE_ANGLE,
     CONF_POWER_FACTOR,
     CONF_REACTIVE_POWER,
@@ -41,6 +43,11 @@ CODEOWNERS = ["@polyfaces", "@jesserockz", "@sebuzet"]
 
 sdm_meter_se_ns = cg.esphome_ns.namespace("sdm_meter_se")
 SDMMeterSE = sdm_meter_se_ns.class_("SDMMeterSE", cg.PollingComponent, modbus.ModbusDevice)
+
+CONF_VOLTAGE_NEXT_PHASE = 'voltage_next_phase'
+CONF_ACTIVE_ENERGY = 'active_energy'
+CONF_REACTIVE_ENERGY = 'reactive_energy'
+CONF_DEMAND_ACTIVE_POWER = 'demand_active_power'
 
 PHASE_SENSORS = {
     CONF_VOLTAGE: sensor.sensor_schema(
@@ -78,6 +85,48 @@ PHASE_SENSORS = {
     ),
     CONF_PHASE_ANGLE: sensor.sensor_schema(
         unit_of_measurement=UNIT_DEGREES, icon=ICON_FLASH, accuracy_decimals=3
+    ),
+
+    CONF_VOLTAGE_NEXT_PHASE: sensor.sensor_schema(
+        unit_of_measurement=UNIT_VOLT,
+        accuracy_decimals=2,
+        device_class=DEVICE_CLASS_VOLTAGE,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_ACTIVE_ENERGY: sensor.sensor_schema(
+        unit_of_measurement=UNIT_WATT,
+        accuracy_decimals=2,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_IMPORT_ACTIVE_ENERGY: sensor.sensor_schema(
+        unit_of_measurement=UNIT_VOLT_AMPS,
+        accuracy_decimals=2,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_EXPORT_ACTIVE_ENERGY: sensor.sensor_schema(
+        unit_of_measurement=UNIT_WATT,
+        accuracy_decimals=2,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_REACTIVE_ENERGY: sensor.sensor_schema(
+        unit_of_measurement=UNIT_KILOWATT_HOURS,
+        accuracy_decimals=2,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),  
+    CONF_IMPORT_REACTIVE_ENERGY: sensor.sensor_schema(
+        unit_of_measurement=UNIT_KILOWATT_HOURS,
+        accuracy_decimals=2,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_EXPORT_REACTIVE_ENERGY: sensor.sensor_schema(
+        unit_of_measurement=UNIT_KILOWATT_HOURS,
+        accuracy_decimals=2,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_DEMAND_ACTIVE_POWER: sensor.sensor_schema(
+        unit_of_measurement=UNIT_AMPERE,
+        accuracy_decimals=2,
+        state_class=STATE_CLASS_MEASUREMENT,
     ),
 }
 
